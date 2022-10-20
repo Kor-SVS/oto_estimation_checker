@@ -153,47 +153,47 @@ def main(path):
     otoini = utaupy.otoini.load(path_otoini)
     otoini.data = sorted_otoini(otoini)
     otoini.write('sorted_otoini.txt')
-    s += f'全エイリアス数: {len(otoini)}\n'
+    s += f'전체 앨리어스 수: {len(otoini)}\n'
 
     remove_cv_and_rest(otoini)
-    s += f'連続音かつ非語尾エイリアス数: {len(otoini)}\n'
+    s += f'연속음 또는 비어미 앨리어스 수: {len(otoini)}\n'
 
     l_2d = otoini_2d(otoini)
-    s += f'音声ファイル数: {len(l_2d)}\n'
+    s += f'음성 파일 수: {len(l_2d)}\n'
 
     # 最初のエイリアスの先行発声+左ブランクの時刻の中央値
     median_start = median_of_first_preutterance(l_2d)
-    s += f'最初のエイリアスの発声時刻の中央値 (ms): {int(median_start)}\n'
+    s += f'최초의 앨리어스의 발성 시각의 중앙 (ms): {int(median_start)}\n'
 
     # 1拍当たりの時間の中央値
     ms_per_beat = median_of_ms_per_beat(l_2d)
 
-    s += f'1拍当たりの時間の中央値 (ms): {int(ms_per_beat)}\n'
+    s += f'1박당 시간의 중앙값 (ms): {int(ms_per_beat)}\n'
     s += f'median of time per beat (ms): {int(ms_per_beat)}\n'
     s += '\n\n'
 
-    s += '原音設定ミスの疑いがあるwavファイル名(明らかにずれてる)------------------\n'
-    s += '1拍めがずれてそう------------------\n'
+    s += '원음설정 미스가 의심되는 wav파일 이름 (확실히 어긋남)------------------\n'
+    s += '1박째가 어긋난 것 같음------------------\n'
     s += '\n'.join(detect_bad_wavfiles(l_2d, ms_per_beat, median_start, threshold=0.9)) + '\n'
-    s += '2拍め以降がずれてそう--------------\n'
+    s += '2박째 이후가 어긋난 것 같음--------------\n'
     s += '\n'.join(detect_bad_aliases(l_2d, ms_per_beat, threshold=0.9)) + '\n\n'
 
-    s += '原音設定ミスの疑いがあるwavファイル名(緩く検出)------------------\n'
-    s += '1拍めがずれてそう------------------\n'
+    s += '원음설정 미스가 의심되는 wav파일 이름 (느슨하게 검출)------------------\n'
+    s += '1박째가 어긋난 것 같음------------------\n'
     s += '\n'.join(detect_bad_wavfiles(l_2d, ms_per_beat, median_start, threshold=0.3)) + '\n'
-    s += '2拍め以降がずれてそう--------------\n'
+    s += '2박째 이후가 어긋난 것 같음--------------\n'
     s += '\n'.join(detect_bad_aliases(l_2d, ms_per_beat, threshold=0.3)) + '\n\n'
 
-    s += '原音設定ミスの疑いがあるwavファイル名(そこそこ検出)------------------\n'
-    s += '1拍めがずれてそう------------------\n'
+    s += '원음설정 미스가 의심되는 wav파일 이름 (그럭저럭 검출)------------------\n'
+    s += '1박째가 어긋난 것 같음------------------\n'
     s += '\n'.join(detect_bad_wavfiles(l_2d, ms_per_beat, median_start, threshold=0.25)) + '\n'
-    s += '2拍め以降がずれてそう--------------\n'
+    s += '2박째 이후가 어긋난 것 같음--------------\n'
     s += '\n'.join(detect_bad_aliases(l_2d, ms_per_beat, threshold=0.25)) + '\n\n'
 
-    s += '原音設定ミスの疑いがあるwavファイル名(厳しめに検出)------------------\n'
-    s += '1拍めがずれてそう------------------\n'
+    s += '원음설정 미스가 의심되는 wav파일 이름 (엄격하게 검출)------------------\n'
+    s += '1박째가 어긋난 것 같음------------------\n'
     s += '\n'.join(detect_bad_wavfiles(l_2d, ms_per_beat, median_start, threshold=0.2)) + '\n'
-    s += '2拍め以降がずれてそう--------------\n'
+    s += '2박째 이후가 어긋난 것 같음--------------\n'
     s += '\n'.join(detect_bad_aliases(l_2d, ms_per_beat, threshold=0.2)) + '\n\n'
 
     with open('result.txt', 'w', encoding='utf-8') as f:
@@ -201,11 +201,11 @@ def main(path):
 
 
 if __name__ == '__main__':
-    print('_____ξ・ヮ・) < 自動原音設定でずれてる部分を検出するツール v0.0.1 ________')
+    print('_____ξ・ヮ・) < 자동 원음 설정에서 어긋난 부분을 검출하는 툴 v0.0.1 ________')
     print('Copyright (c) 2001-2020 Python Software Foundation')
     print('Copyright (c) 2020 oatsu')
     if len(argv) > 1:
         main(argv[1])
     else:
-        main(input('原音設定ファイルをD&Dしてください / Select oto.ini file\n>>> '))
+        main(input('원음 설정 파일(oto.ini)을 드래그 앤 드롭해주세요 / Select oto.ini file\n>>> '))
     input('Press Enter to exit.')
